@@ -31,6 +31,9 @@ export default function ProductoDetail() {
                 <Button size="small" color="primary">
                     Share
                 </Button>
+                <Button size="small" color="primary">
+                    Share
+                </Button>
             </CardActions>
         </Card>
     );

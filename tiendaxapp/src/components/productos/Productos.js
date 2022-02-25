@@ -7,6 +7,7 @@ import Container from '@mui/material/Container'
 import Pagination from '@mui/material/Pagination'
 
 import ProductoDetail from './ProductoDetail';
+import ProductoAdd from './ProductoAdd';
 
 import env from "react-dotenv";
 
@@ -19,6 +20,7 @@ export default function Productos() {
     const [isLoading, setIsLoading] = useState(true);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState();
+    const [isProductoAddOpen, setProductoAddOpen] = useState(false);
 
     const fetchData = () => {
         fetch(`${env.BASE_ADDRESS}producto?PageNumber=${currentPage}&PageSize=10`)
@@ -34,6 +36,11 @@ export default function Productos() {
     }, [currentPage])
 
     useEffect(() => {
+        fetchData();
+        console.log('refrescar despues de guardado')
+    }, [isProductoAddOpen])
+
+    useEffect(() => {
         if (productos.length !== 0) {
             setIsLoading(false);
         }
@@ -44,9 +51,17 @@ export default function Productos() {
         fetchData()
     };
 
+    const handleProductoAddOpen = () => {
+        setProductoAddOpen(!isProductoAddOpen);
+    };
+
     return (
         <div >
-            <Button variant="contained">
+            <ProductoAdd
+                isModalOpen={isProductoAddOpen}
+                handleCloseModal={() => setProductoAddOpen(false)}
+            />
+            <Button variant="contained" onClick={() => handleProductoAddOpen()}>
                 <AddButtonIcon />
             </Button>
 
