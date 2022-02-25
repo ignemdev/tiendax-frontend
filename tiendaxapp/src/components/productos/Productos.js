@@ -1,3 +1,5 @@
+import { Fragment, useEffect, useState } from 'react'
+
 import Button from '@mui/material/Button';
 import AddButtonIcon from '@mui/icons-material/Add';
 import Grid from '@mui/material/Grid';
@@ -6,11 +8,42 @@ import Pagination from '@mui/material/Pagination'
 
 import ProductoDetail from './ProductoDetail';
 
+import env from "react-dotenv";
+
 let paginationContainerStyles = {
     py: 3, display: 'flex', justifyContent: 'center'
-}
+};
 
 export default function Productos() {
+    const [productos, setProductos] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [totalPages, setTotalPages] = useState();
+
+    const fetchData = () => {
+        fetch(`${env.BASE_ADDRESS}producto?PageNumber=${currentPage}&PageSize=10`)
+            .then(res => res.json())
+            .then(json => {
+                setProductos(json.data)
+                setTotalPages(json.totalPages)
+            });
+    };
+
+    useEffect(() => {
+        fetchData();
+    }, [currentPage])
+
+    useEffect(() => {
+        if (productos.length !== 0) {
+            setIsLoading(false);
+        }
+    }, [currentPage, productos]);
+
+    const handlePageChange = (e, currentPage) => {
+        setCurrentPage(currentPage)
+        fetchData()
+    };
+
     return (
         <div >
             <Button variant="contained">
@@ -19,23 +52,19 @@ export default function Productos() {
 
             <div>
                 <Grid container spacing={2} marginTop={1} marginBottom={1}>
-                    <Grid item lg={3} md={4} sm={6}>
-                        <ProductoDetail />
-                    </Grid>
-                    <Grid item lg={3} md={4} sm={6}>
-                        <ProductoDetail />
-                    </Grid>
-                    <Grid item lg={3} md={4} sm={6}>
-                        <ProductoDetail />
-                    </Grid>
-                    <Grid item lg={3} md={4} sm={6}>
-                        <ProductoDetail />
-                    </Grid>
+                    {isLoading ?
+                        (<p>Loading ...</p>) :
+                        (<Fragment>{productos?.map(p => (
+                            <Grid item lg={3} md={4} sm={6}>
+                                <ProductoDetail />
+                            </Grid>
+                        ))}</Fragment>)
+                    }
                 </Grid>
             </div>
 
             <Container sx={{ ...paginationContainerStyles }}>
-                <Pagination count={10} color="primary" />
+                <Pagination count={totalPages} page={currentPage} onChange={handlePageChange} />
             </Container>
         </div>
     )

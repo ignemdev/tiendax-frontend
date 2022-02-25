@@ -13,7 +13,7 @@ const Routing = () => {
   return (
     <BrowserRouter >
       <Navbar />
-      <Container disableGutters='true' sx={{ p: 3, width: '100%' }}>
+      <Container disableGutters={true} sx={{ p: 3, width: '100%' }}>
         <Routes>
           <Route path="/" element={<Productos />} />
           <Route path="productos" element={<Productos />} />
