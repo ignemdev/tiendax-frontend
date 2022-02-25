@@ -11,7 +11,7 @@ export default function Navbar() {
             <AppBar position="static">
                 <Toolbar>
                     <NavbarMenu />
-                    <Button color="inherit" href='/'>Tienda</Button>
+                    <Button color="inherit" href='/'>Productos</Button>
                 </Toolbar>
             </AppBar>
         </Box>
