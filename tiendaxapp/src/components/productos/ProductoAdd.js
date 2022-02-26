@@ -116,7 +116,7 @@ export default function ProductoAdd({ isModalOpen, handleCloseModal }) {
     }
 
     function resetForm() {
-        setValues({ ...values, descripcion: '', nombre: '' });
+        setValues({ ...values, descripcion: "", nombre: "" });
     }
 
     function resetAlert() {
@@ -152,45 +152,40 @@ export default function ProductoAdd({ isModalOpen, handleCloseModal }) {
                     <Typography id="modal-modal-title" variant="h6" component="h2" sx={{ mb: 1 }}>
                         Nuevo Producto
                     </Typography>
-                    <form onSubmit={handleSubmit}>
-                        <TextField
-                            name="nombre"
-                            id="nombre"
-                            required
-                            value={values.nombre}
-                            onChange={handleChange}
-                            label="Nombre"
-                            variant="outlined"
-                            fullWidth
-                            sx={inputStyle} />
+                    <TextField
+                        name="nombre"
+                        id="nombre"
+                        value={values.nombre}
+                        onChange={handleChange}
+                        label="Nombre"
+                        variant="outlined"
+                        fullWidth
+                        sx={inputStyle} />
 
-                        <TextField
-                            name="descripcion"
-                            id="descripcion"
-                            required
-                            value={values.descripcion}
-                            onChange={handleChange}
-                            label="Descripcion"
-                            multiline rows={6}
-                            fullWidth
-                            sx={inputStyle} />
+                    <TextField
+                        name="descripcion"
+                        id="descripcion"
+                        value={values.descripcion}
+                        onChange={handleChange}
+                        label="Descripcion"
+                        multiline rows={6}
+                        fullWidth
+                        sx={inputStyle} />
 
-                        {isLoading ?
-                            (<p>Loading ...</p>) :
-                            (<Autocomplete
-                                name="marcaId"
-                                id="marcaId"
-                                required
-                                value={values.marcaIdLabel}
-                                onChange={handleSelectChange}
-                                disablePortal
-                                options={marcas}
-                                sx={{ width: '100%', ...inputStyle }}
-                                renderInput={(params) => <TextField {...params} label="Marca" />} />
-                            )
-                        }
-                        <Button sx={inputStyle} variant="contained" elementType={''} onClick={handleSubmit}>Guardar <SaveIcon sx={{ ml: 1 }} /></Button>
-                    </form>
+                    {isLoading ?
+                        (<p>Loading ...</p>) :
+                        (<Autocomplete
+                            name="marcaId"
+                            id="marcaId"
+                            value={values.marcaIdLabel}
+                            onChange={handleSelectChange}
+                            disablePortal
+                            options={marcas}
+                            sx={{ width: '100%', ...inputStyle }}
+                            renderInput={(params) => <TextField {...params} label="Marca" />} />
+                        )
+                    }
+                    <Button sx={inputStyle} variant="contained" onClick={handleSubmit}>Guardar <SaveIcon sx={{ ml: 1 }} /></Button>
                     <Collapse in={alertConfig.isOpen}>
                         <Alert
                             severity={alertConfig.type}

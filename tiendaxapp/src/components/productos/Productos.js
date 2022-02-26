@@ -8,7 +8,6 @@ import Pagination from '@mui/material/Pagination'
 
 import ProductoDetail from './ProductoDetail';
 import ProductoAdd from './ProductoAdd';
-import Variantes from '../variantes/Variantes'
 
 import env from "react-dotenv";
 
@@ -29,6 +28,7 @@ export default function Productos() {
             .then(json => {
                 setProductos(json.data)
                 setTotalPages(json.totalPages)
+                setIsLoading(false);
             });
     };
 
@@ -43,7 +43,7 @@ export default function Productos() {
 
     useEffect(() => {
         if (productos.length !== 0) {
-            setIsLoading(false);
+
         }
     }, [currentPage, productos]);
 

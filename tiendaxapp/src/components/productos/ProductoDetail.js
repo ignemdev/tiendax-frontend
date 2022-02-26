@@ -5,15 +5,26 @@ import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import { Button, CardActionArea, CardActions, ButtonGroup, Switch } from '@mui/material';
 
+import Variantes from '../variantes/Variantes'
+
 export default function ProductoDetail({ producto }) {
 
     const [activoChecked, setActivoChecked] = useState(true);
+    const [isVariantesOpen, setVariantesOpen] = useState(false);
+
+    const { nombre, descripcion, id } = producto;
 
     useEffect(() => {
         setActivoChecked(producto.activo);
     }, [producto])
 
-    const { nombre, descripcion } = producto;
+    useEffect(() => {
+        console.log('refrescar despues de abrir y guardar variantes')
+    }, [isVariantesOpen])
+
+    const handleVariantesOpen = () => {
+        setVariantesOpen(!isVariantesOpen);
+    };
 
     const handleSwitchChange = (event) => {
         setActivoChecked(event.target.checked);
@@ -41,7 +52,7 @@ export default function ProductoDetail({ producto }) {
                 <ButtonGroup size="small" variant="contained" aria-label="text button group" fullWidth>
                     <Button>Detalles</Button>
                     <Button>Editar</Button>
-                    <Button>Variantes</Button>
+                    <Button onClick={() => handleVariantesOpen()}>Variantes</Button>
                 </ButtonGroup>
             </CardActions>
             <CardActions>
@@ -51,6 +62,11 @@ export default function ProductoDetail({ producto }) {
                     inputProps={{ 'aria-label': 'controlled' }}
                 />
             </CardActions>
+            <Variantes
+                productoId={id}
+                isModalOpen={isVariantesOpen}
+                handleCloseModal={() => setVariantesOpen(false)}
+            />
         </Card>
     );
 }
