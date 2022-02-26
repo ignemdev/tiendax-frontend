@@ -8,6 +8,7 @@ import Pagination from '@mui/material/Pagination'
 
 import ProductoDetail from './ProductoDetail';
 import ProductoAdd from './ProductoAdd';
+import Variantes from '../variantes/Variantes'
 
 import env from "react-dotenv";
 
@@ -23,7 +24,7 @@ export default function Productos() {
     const [isProductoAddOpen, setProductoAddOpen] = useState(false);
 
     const fetchData = () => {
-        fetch(`${env.BASE_ADDRESS}producto?PageNumber=${currentPage}&PageSize=10`)
+        fetch(`${env.BASE_ADDRESS}/producto?PageNumber=${currentPage}&PageSize=5`)
             .then(res => res.json())
             .then(json => {
                 setProductos(json.data)
@@ -57,10 +58,6 @@ export default function Productos() {
 
     return (
         <div >
-            <ProductoAdd
-                isModalOpen={isProductoAddOpen}
-                handleCloseModal={() => setProductoAddOpen(false)}
-            />
             <Button variant="contained" onClick={() => handleProductoAddOpen()}>
                 <AddButtonIcon />
             </Button>
@@ -71,7 +68,7 @@ export default function Productos() {
                         (<p>Loading ...</p>) :
                         (<Fragment>{productos?.map(p => (
                             <Grid item lg={3} md={4} sm={6}>
-                                <ProductoDetail />
+                                <ProductoDetail producto={p} />
                             </Grid>
                         ))}</Fragment>)
                     }
@@ -81,6 +78,10 @@ export default function Productos() {
             <Container sx={{ ...paginationContainerStyles }}>
                 <Pagination count={totalPages} page={currentPage} onChange={handlePageChange} />
             </Container>
+            <ProductoAdd
+                isModalOpen={isProductoAddOpen}
+                handleCloseModal={() => setProductoAddOpen(false)}
+            />
         </div>
     )
 }

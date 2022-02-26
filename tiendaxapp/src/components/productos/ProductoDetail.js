@@ -1,12 +1,23 @@
-import * as React from 'react';
+import { useEffect, useState } from 'react';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
-import { Button, CardActionArea, CardActions } from '@mui/material';
+import { Button, CardActionArea, CardActions, ButtonGroup, Switch } from '@mui/material';
 
-export default function ProductoDetail() {
+export default function ProductoDetail({ producto }) {
 
+    const [activoChecked, setActivoChecked] = useState(true);
+
+    useEffect(() => {
+        setActivoChecked(producto.activo);
+    }, [producto])
+
+    const { nombre, descripcion } = producto;
+
+    const handleSwitchChange = (event) => {
+        setActivoChecked(event.target.checked);
+    };
 
     return (
         <Card sx={{ maxWidth: 345 }}>
@@ -19,21 +30,26 @@ export default function ProductoDetail() {
                 /> */}
                 <CardContent>
                     <Typography gutterBottom variant="h5" component="div">
-                        Lizard
+                        {nombre}
                     </Typography>
                     <Typography variant="body2" color="text.secondary">
-                        Lizards are a widespread group of squamate reptiles, with over 6,000
-                        species, ranging across all continents except Antarctica
+                        {descripcion}
                     </Typography>
                 </CardContent>
             </CardActionArea>
             <CardActions>
-                <Button size="small" color="primary">
-                    Share
-                </Button>
-                <Button size="small" color="primary">
-                    Share
-                </Button>
+                <ButtonGroup size="small" variant="contained" aria-label="text button group" fullWidth>
+                    <Button>Detalles</Button>
+                    <Button>Editar</Button>
+                    <Button>Variantes</Button>
+                </ButtonGroup>
+            </CardActions>
+            <CardActions>
+                <Switch
+                    checked={activoChecked}
+                    onChange={handleSwitchChange}
+                    inputProps={{ 'aria-label': 'controlled' }}
+                />
             </CardActions>
         </Card>
     );

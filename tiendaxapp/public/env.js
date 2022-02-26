@@ -1,7 +1,7 @@
 window.env = {
   "ALLUSERSPROFILE": "C:\\ProgramData",
   "APPDATA": "C:\\Users\\ignac\\AppData\\Roaming",
-  "BASE_ADDRESS": "https://localhost:7144/api/",
+  "BASE_ADDRESS": "https://localhost:7144/api",
   "ChocolateyInstall": "C:\\ProgramData\\chocolatey",
   "ChocolateyLastPathUpdate": "132892623636149494",
   "CHROME_CRASHPAD_PIPE_NAME": "\\\\.\\pipe\\crashpad_36856_CSEPGYMEWBFJRWEM",

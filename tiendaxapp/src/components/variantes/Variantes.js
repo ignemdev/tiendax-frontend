@@ -25,7 +25,7 @@ const boxStyle = {
 
 const inputStyle = { my: 1 }
 
-export default function ProductoAdd({ isModalOpen, handleCloseModal }) {
+export default function Variantes({ isModalOpen, handleCloseModal, productoId }) {
 
     const [marcas, setMarcas] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
@@ -149,68 +149,8 @@ export default function ProductoAdd({ isModalOpen, handleCloseModal }) {
                 aria-describedby="modal-modal-description"
             >
                 <Box sx={boxStyle}>
-                    <Typography id="modal-modal-title" variant="h6" component="h2" sx={{ mb: 1 }}>
-                        Nuevo Producto
-                    </Typography>
-                    <form onSubmit={handleSubmit}>
-                        <TextField
-                            name="nombre"
-                            id="nombre"
-                            required
-                            value={values.nombre}
-                            onChange={handleChange}
-                            label="Nombre"
-                            variant="outlined"
-                            fullWidth
-                            sx={inputStyle} />
-
-                        <TextField
-                            name="descripcion"
-                            id="descripcion"
-                            required
-                            value={values.descripcion}
-                            onChange={handleChange}
-                            label="Descripcion"
-                            multiline rows={6}
-                            fullWidth
-                            sx={inputStyle} />
-
-                        {isLoading ?
-                            (<p>Loading ...</p>) :
-                            (<Autocomplete
-                                name="marcaId"
-                                id="marcaId"
-                                required
-                                value={values.marcaIdLabel}
-                                onChange={handleSelectChange}
-                                disablePortal
-                                options={marcas}
-                                sx={{ width: '100%', ...inputStyle }}
-                                renderInput={(params) => <TextField {...params} label="Marca" />} />
-                            )
-                        }
-                        <Button sx={inputStyle} variant="contained" elementType={''} onClick={handleSubmit}>Guardar <SaveIcon sx={{ ml: 1 }} /></Button>
-                    </form>
-                    <Collapse in={alertConfig.isOpen}>
-                        <Alert
-                            severity={alertConfig.type}
-                            action={
-                                <IconButton
-                                    aria-label="close"
-                                    color="inherit"
-                                    size="small"
-                                    onClick={() => {
-                                        setAlertConfig({ ...alertConfig, isOpen: false })
-                                    }}
-                                >
-                                    <CloseIcon fontSize="inherit" />
-                                </IconButton>
-                            }
-                            sx={{ mb: 2 }}
-                        >
-                            {alertConfig.message}
-                        </Alert>
-                    </Collapse>
+                    <div>Aqui va el form</div>
+                    <div>aqui van las variantes</div>
                 </Box>
             </Modal>
         </div>
