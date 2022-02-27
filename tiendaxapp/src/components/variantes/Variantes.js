@@ -10,9 +10,11 @@ import IconButton from '@mui/material/IconButton';
 import Collapse from '@mui/material/Collapse';
 import Button from '@mui/material/Button';
 import CloseIcon from '@mui/icons-material/Close';
-import InputAdornment from '@mui/material/InputAdornment'
-import Chip from '@mui/material/Chip'
-import { DataGrid } from '@mui/x-data-grid'
+import InputAdornment from '@mui/material/InputAdornment';
+import Chip from '@mui/material/Chip';
+import LinearProgress from '@mui/material/LinearProgress';
+import CircularProgress from '@mui/material/CircularProgress';
+import { DataGrid } from '@mui/x-data-grid';
 
 import env from "react-dotenv";
 
@@ -88,7 +90,6 @@ export default function Variantes({ isModalOpen, handleCloseModal, productoId })
             });
     };
 
-
     const fetchVariantesData = () => {
         fetch(`${env.BASE_ADDRESS}/producto/${productoId}/variantes`)
             .then(res => res.json())
@@ -122,11 +123,7 @@ export default function Variantes({ isModalOpen, handleCloseModal, productoId })
             .catch(error => {
                 setAlertStates('error', error)
             });
-    }
-
-    function setAlertStates(type = 'success', message = 'La variante ha sido guardada.') {
-        setAlertConfig({ type, message, isOpen: true })
-    }
+    };
 
     useEffect(() => {
         handleClickOpen();
@@ -139,7 +136,6 @@ export default function Variantes({ isModalOpen, handleCloseModal, productoId })
 
     const handleClickOpen = () => {
         console.log("se abre");
-        //setTimeout(() => setOpen(false), 16000);
     };
 
     const handleClose = () => {
@@ -153,16 +149,16 @@ export default function Variantes({ isModalOpen, handleCloseModal, productoId })
         const { colorIdLabel, ...rest } = values;
         const variante = { ...rest, productoId };
         postVariante(variante);
-    }
+    };
 
     function resetForm() {
         setValues({ ...values, sku: '', precio: 0, stock: 0 });
-        setColorChip(colorChipDefaults)
-    }
+        setColorChip(colorChipDefaults);
+    };
 
     function resetAlert() {
-        setAlertConfig({ ...alertConfig, isOpen: false })
-    }
+        setAlertConfig({ ...alertConfig, isOpen: false });
+    };
 
     function handleChange(e) {
         const { target } = e;
@@ -170,8 +166,8 @@ export default function Variantes({ isModalOpen, handleCloseModal, productoId })
 
         const newValues = { ...values, [name]: value, };
         setValues(newValues);
-        console.log(values)
-    }
+        console.log(values);
+    };
 
     function handleSelectChange(e, value) {
         const name = e.target.id.split("-")[0];
@@ -183,9 +179,13 @@ export default function Variantes({ isModalOpen, handleCloseModal, productoId })
         setValues(newValues);
 
         let { label, hex } = value;
-        setColorChip({ label, hex })
-        console.log(colorChip)
-    }
+        setColorChip({ label, hex });
+        console.log(colorChip);
+    };
+
+    function setAlertStates(type = 'success', message = 'La variante ha sido guardada.') {
+        setAlertConfig({ type, message, isOpen: true });
+    };
 
     return (
         <div>
@@ -233,7 +233,9 @@ export default function Variantes({ isModalOpen, handleCloseModal, productoId })
                         </Box>
                         <Box sx={boxInputStyle}>
                             {isLoadingColores ?
-                                (<p>Loading ...</p>) :
+                                (<Box sx={{ display: 'flex' }}>
+                                    <CircularProgress />
+                                </Box>) :
                                 (<Autocomplete
                                     name="colorId"
                                     id="colorId"
@@ -276,7 +278,7 @@ export default function Variantes({ isModalOpen, handleCloseModal, productoId })
                         </Typography>
                         <Box fullWidth sx={{ height: 400 }}>
                             {isLoadingVariantes ?
-                                (<p>Loading ...</p>) :
+                                (<LinearProgress />) :
                                 (<DataGrid
                                     rows={variantes}
                                     columns={variantesGridColumns}

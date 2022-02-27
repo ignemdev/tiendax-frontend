@@ -3,8 +3,9 @@ import { Fragment, useEffect, useState } from 'react'
 import Button from '@mui/material/Button';
 import AddButtonIcon from '@mui/icons-material/Add';
 import Grid from '@mui/material/Grid';
-import Container from '@mui/material/Container'
-import Pagination from '@mui/material/Pagination'
+import Container from '@mui/material/Container';
+import Pagination from '@mui/material/Pagination';
+import LinearProgress from '@mui/material/LinearProgress';
 
 import ProductoDetail from './ProductoDetail';
 import ProductoAdd from './ProductoAdd';
@@ -23,33 +24,27 @@ export default function Productos() {
     const [isProductoAddOpen, setProductoAddOpen] = useState(false);
 
     const fetchData = () => {
-        fetch(`${env.BASE_ADDRESS}/producto?PageNumber=${currentPage}&PageSize=5`)
+        fetch(`${env.BASE_ADDRESS}/producto?PageNumber=${currentPage}&PageSize=8`)
             .then(res => res.json())
             .then(json => {
-                setProductos(json.data)
-                setTotalPages(json.totalPages)
+                setProductos(json.data);
+                setTotalPages(json.totalPages);
                 setIsLoading(false);
             });
     };
 
     useEffect(() => {
         fetchData();
-    }, [currentPage])
+    }, [currentPage]);
 
     useEffect(() => {
         fetchData();
         console.log('refrescar despues de guardado')
-    }, [isProductoAddOpen])
-
-    useEffect(() => {
-        if (productos.length !== 0) {
-
-        }
-    }, [currentPage, productos]);
+    }, [isProductoAddOpen]);
 
     const handlePageChange = (e, currentPage) => {
-        setCurrentPage(currentPage)
-        fetchData()
+        setCurrentPage(currentPage);
+        fetchData();
     };
 
     const handleProductoAddOpen = () => {
@@ -65,7 +60,7 @@ export default function Productos() {
             <div>
                 <Grid container spacing={2} marginTop={1} marginBottom={1}>
                     {isLoading ?
-                        (<p>Loading ...</p>) :
+                        (<LinearProgress />) :
                         (<Fragment>{productos?.map(p => (
                             <Grid item lg={3} md={4} sm={6}>
                                 <ProductoDetail producto={p} />

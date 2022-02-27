@@ -10,6 +10,7 @@ import IconButton from '@mui/material/IconButton';
 import Collapse from '@mui/material/Collapse';
 import Button from '@mui/material/Button';
 import CloseIcon from '@mui/icons-material/Close';
+import CircularProgress from '@mui/material/CircularProgress';
 
 import env from "react-dotenv";
 
@@ -23,9 +24,9 @@ const boxStyle = {
     p: 4,
 };
 
-const inputStyle = { my: 1 }
+const inputStyle = { my: 1 };
 
-export default function ProductoAdd({ isModalOpen, handleCloseModal }) {
+export default function ProductoEdit({ isModalOpen, handleCloseModal, producto }) {
 
     const [marcas, setMarcas] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
@@ -54,13 +55,12 @@ export default function ProductoAdd({ isModalOpen, handleCloseModal }) {
             });
     };
 
-
-    function postProducto(producto) {
+    function putProducto(producto) {
         resetAlert();
-        setAlertConfig({ ...alertConfig, isOpen: false });
+        setAlertConfig({ ...alertConfig, isOpen: false })
 
         fetch(`${env.BASE_ADDRESS}/producto`, {
-            method: 'POST',
+            method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -80,10 +80,6 @@ export default function ProductoAdd({ isModalOpen, handleCloseModal }) {
             });
     }
 
-    function setAlertStates(type = 'success', message = 'El producto ha sido guardado.') {
-        setAlertConfig({ type, message, isOpen: true })
-    };
-
     useEffect(() => {
         handleClickOpen();
     }, []);
@@ -93,6 +89,12 @@ export default function ProductoAdd({ isModalOpen, handleCloseModal }) {
     }, [isModalOpen]);
 
     useEffect(() => {
+        const { id, nombre, descripcion, marca } = producto;
+        setValues({ id, nombre, descripcion, marcaId: marca.id, marcaIdLabel: marca.nombre });
+        console.log(values);
+    }, [isModalOpen])
+
+    useEffect(() => {
         if (marcas.length !== 0) {
             setIsLoading(false);
         }
@@ -100,7 +102,6 @@ export default function ProductoAdd({ isModalOpen, handleCloseModal }) {
 
     const handleClickOpen = () => {
         console.log("se abre");
-        //setTimeout(() => setOpen(false), 16000);
     };
 
     const handleClose = () => {
@@ -112,23 +113,23 @@ export default function ProductoAdd({ isModalOpen, handleCloseModal }) {
     function handleSubmit(e) {
         e.preventDefault();
         const { marcaIdLabel, ...producto } = values;
-        postProducto(producto);
-    };
+        putProducto(producto);
+    }
 
     function resetForm() {
         setValues({ ...values, descripcion: "", nombre: "" });
-    };
+    }
 
     function resetAlert() {
-        setAlertConfig({ ...alertConfig, isOpen: false });
-    };
+        setAlertConfig({ ...alertConfig, isOpen: false })
+    }
 
     function handleChange(e) {
         const { target } = e;
         const { name, value } = target;
         const newValues = { ...values, [name]: value, };
         setValues(newValues);
-    };
+    }
 
     function handleSelectChange(e, value) {
         const name = e.target.id.split("-")[0];
@@ -138,6 +139,10 @@ export default function ProductoAdd({ isModalOpen, handleCloseModal }) {
 
         const newValues = { ...values, [name]: value.id, [`${name}Label`]: value.label };
         setValues(newValues);
+    }
+
+    function setAlertStates(type = 'success', message = 'El producto ha sido editado.') {
+        setAlertConfig({ type, message, isOpen: true })
     };
 
     return (
@@ -173,7 +178,9 @@ export default function ProductoAdd({ isModalOpen, handleCloseModal }) {
                         sx={inputStyle} />
 
                     {isLoading ?
-                        (<p>Loading ...</p>) :
+                        (<Box sx={{ display: 'flex' }}>
+                            <CircularProgress />
+                        </Box>) :
                         (<Autocomplete
                             name="marcaId"
                             id="marcaId"
