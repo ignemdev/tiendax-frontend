@@ -73,7 +73,7 @@ export default function ProductoEdit({ isModalOpen, handleCloseModal, handleProd
                     return;
                 }
 
-                const { data: { marca, categorias, ...updatedProducto } } = result;
+                const { data: { ...updatedProducto } } = result;
                 handleProductoUpdated(updatedProducto);
                 handleCloseModal(false);
             })
