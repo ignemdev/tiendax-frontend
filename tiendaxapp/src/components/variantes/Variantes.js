@@ -135,7 +135,7 @@ export default function Variantes({ isModalOpen, handleCloseModal, productoId })
     }, [isModalOpen])
 
     const handleClickOpen = () => {
-        console.log("se abre");
+        // console.log("se abre");
     };
 
     const handleClose = () => {
@@ -166,7 +166,7 @@ export default function Variantes({ isModalOpen, handleCloseModal, productoId })
 
         const newValues = { ...values, [name]: value, };
         setValues(newValues);
-        console.log(values);
+        // console.log(values);
     };
 
     function handleSelectChange(e, value) {
@@ -180,7 +180,7 @@ export default function Variantes({ isModalOpen, handleCloseModal, productoId })
 
         let { label, hex } = value;
         setColorChip({ label, hex });
-        console.log(colorChip);
+        // console.log(colorChip);
     };
 
     function setAlertStates(type = 'success', message = 'La variante ha sido guardada.') {

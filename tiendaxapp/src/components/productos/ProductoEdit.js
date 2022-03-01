@@ -26,7 +26,7 @@ const boxStyle = {
 
 const inputStyle = { my: 1 };
 
-export default function ProductoEdit({ isModalOpen, handleCloseModal, producto }) {
+export default function ProductoEdit({ isModalOpen, handleCloseModal, handleProductoUpdated, producto }) {
 
     const [marcas, setMarcas] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
@@ -72,8 +72,10 @@ export default function ProductoEdit({ isModalOpen, handleCloseModal, producto }
                     setAlertStates('error', result.errorMessage)
                     return;
                 }
-                setAlertStates()
-                resetForm();
+
+                const { data: { marca, categorias, ...updatedProducto } } = result;
+                handleProductoUpdated(updatedProducto);
+                handleCloseModal(false);
             })
             .catch(error => {
                 setAlertStates('error', error)
@@ -90,8 +92,8 @@ export default function ProductoEdit({ isModalOpen, handleCloseModal, producto }
 
     useEffect(() => {
         const { id, nombre, descripcion, marca } = producto;
-        setValues({ id, nombre, descripcion, marcaId: marca.id, marcaIdLabel: marca.nombre });
-        console.log(values);
+        setValues({ id, nombre, descripcion, marcaId: marca?.id, marcaIdLabel: marca?.nombre });
+        // console.log(values);
     }, [isModalOpen])
 
     useEffect(() => {
@@ -101,7 +103,7 @@ export default function ProductoEdit({ isModalOpen, handleCloseModal, producto }
     }, [marcas]);
 
     const handleClickOpen = () => {
-        console.log("se abre");
+        // console.log("se abre");
     };
 
     const handleClose = () => {

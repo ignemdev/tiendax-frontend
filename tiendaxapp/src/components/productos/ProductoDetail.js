@@ -17,7 +17,18 @@ var formatter = new Intl.NumberFormat('es-DO', {
     currency: 'DOP',
 });
 
-export default function ProductoDetail({ producto }) {
+const defaultProductoState = {
+    id: 0,
+    nombre: '',
+    descripcion: '',
+    creado: '',
+    modificado: '',
+    activo: false
+}
+
+export default function ProductoDetail({ productoItem, productoId }) {
+
+    const [producto, setProducto] = useState(defaultProductoState);
 
     const [activoChecked, setActivoChecked] = useState(true);
 
@@ -30,19 +41,17 @@ export default function ProductoDetail({ producto }) {
     const [isVariantesOpen, setVariantesOpen] = useState(false);
     const [isProductoEditOpen, setProductoEditOpen] = useState(false);
 
-    const { nombre, descripcion, id, creado, modificado } = producto;
-
     const fetchVariantesData = () => {
-        fetch(`${env.BASE_ADDRESS}/producto/${id}/variantes`)
+        fetch(`${env.BASE_ADDRESS}/producto/${productoId}/variantes`)
             .then(res => res.json())
             .then(json => {
                 const variantes = json.data;
 
                 setDefaultStatesColorPrecios();
 
-                if (variantes.length != 0) {
-                    const colores = variantes.map((x) => `#${x.color?.hex}`);
-                    const precios = variantes.map((x) => { return { precio: x?.precio, hex: `#${x.color?.hex}` } })
+                if (variantes?.length != 0) {
+                    const colores = variantes?.map((x) => `#${x.color?.hex}`);
+                    const precios = variantes?.map((x) => { return { precio: x?.precio, hex: `#${x.color?.hex}` } })
                     setColor(colores[0])
                     setPrecio(precios[0]?.precio)
                     setColores(colores);
@@ -54,12 +63,14 @@ export default function ProductoDetail({ producto }) {
     };
 
     useEffect(() => {
+        setProducto(defaultProductoState);
+        setProducto(productoItem);
         setActivoChecked(producto.activo);
         fetchVariantesData();
-    }, [producto]);
+        // console.log(producto);
+    }, [productoItem]);
 
     useEffect(() => {
-        console.log('refrescar despues de abrir y guardar variantes')
         fetchVariantesData();
     }, [isVariantesOpen, isProductoEditOpen]);
 
@@ -84,24 +95,29 @@ export default function ProductoDetail({ producto }) {
 
     const handleSwitchChange = (e) => {
         setActivoChecked(e.target.checked);
-        toggleProducto(id);
+        toggleProducto(producto.id);
     };
 
     const handleColorChange = ({ hex }) => {
-        const precioColor = precios.find(p => p?.hex === hex.toUpperCase());
-        console.log(precioColor);
+        const precioColor = precios.find(p => p?.hex.toUpperCase() === hex.toUpperCase());
+        // console.log(precioColor);
         setPrecio(precioColor.precio);
         setColor(hex);
     };
+
+    const handleProductoUpdated = (updatedProducto) => {
+        setProducto(updatedProducto);
+        // console.log(updatedProducto);
+    }
 
     return (
         <Card>
             <CardContent>
                 <Typography gutterBottom variant="h5" component="div">
-                    {nombre}
+                    {producto.nombre}
                 </Typography>
                 <Typography variant="body1" color="text.secondary">
-                    {descripcion}
+                    {producto.descripcion}
                 </Typography>
                 <Box sx={{ mr: 1 }}>
                     {isLoadingVariantes ?
@@ -134,11 +150,12 @@ export default function ProductoDetail({ producto }) {
                 />
             </CardActions>
             <CardActions sx={{ pb: 2, display: 'flex', flexWrap: 'wrap', justifyContent: 'end' }}>
-                <Chip label={creado} color="success" sx={{ mb: 1 }} />
-                <Chip label={modificado} color="primary" />
+                <Chip label={producto.creado} color="success" sx={{ mb: 1 }} />
+                <Chip label={producto.modificado} color="primary" />
             </CardActions>
+
             <Variantes
-                productoId={id}
+                productoId={productoId}
                 isModalOpen={isVariantesOpen}
                 handleCloseModal={() => setVariantesOpen(false)}
             />
@@ -146,6 +163,7 @@ export default function ProductoDetail({ producto }) {
                 producto={producto}
                 isModalOpen={isProductoEditOpen}
                 handleCloseModal={() => setProductoEditOpen(false)}
+                handleProductoUpdated={handleProductoUpdated}
             />
         </Card>
     );

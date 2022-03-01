@@ -4,7 +4,7 @@ window.env = {
   "BASE_ADDRESS": "https://localhost:7144/api",
   "ChocolateyInstall": "C:\\ProgramData\\chocolatey",
   "ChocolateyLastPathUpdate": "132892623636149494",
-  "CHROME_CRASHPAD_PIPE_NAME": "\\\\.\\pipe\\crashpad_36856_CSEPGYMEWBFJRWEM",
+  "CHROME_CRASHPAD_PIPE_NAME": "\\\\.\\pipe\\crashpad_23128_RRVOTUKDOMWHCGGK",
   "COLOR": "1",
   "COLORTERM": "truecolor",
   "CommonProgramFiles": "C:\\Program Files\\Common Files",

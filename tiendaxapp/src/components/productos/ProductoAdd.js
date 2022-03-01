@@ -99,7 +99,7 @@ export default function ProductoAdd({ isModalOpen, handleCloseModal }) {
     }, [marcas]);
 
     const handleClickOpen = () => {
-        console.log("se abre");
+        // console.log("se abre");
         //setTimeout(() => setOpen(false), 16000);
     };
 

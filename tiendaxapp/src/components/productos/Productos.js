@@ -39,7 +39,7 @@ export default function Productos() {
 
     useEffect(() => {
         fetchData();
-        console.log('refrescar despues de guardado')
+        // console.log('refrescar despues de guardado')
     }, [isProductoAddOpen]);
 
     const handlePageChange = (e, currentPage) => {
@@ -62,8 +62,8 @@ export default function Productos() {
                     {isLoading ?
                         (<LinearProgress />) :
                         (<Fragment>{productos?.map(p => (
-                            <Grid item lg={3} md={4} sm={6}>
-                                <ProductoDetail producto={p} />
+                            <Grid key={p.id} item lg={3} md={4} sm={6}>
+                                <ProductoDetail productoItem={p} productoId={p.id} key={p.id} />
                             </Grid>
                         ))}</Fragment>)
                     }
